@@ -16,11 +16,14 @@ const app = express();
 const allowedOrigins = new Set(
   [
     process.env.CLIENT_URL,
+    process.env.ALLOWED_ORIGINS,
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-  ].filter(Boolean)
+  ]
+    .flatMap((value) => (value ? value.split(",") : []))
+    .map((value) => value.trim())
+    .filter(Boolean)
 );
-
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -38,6 +41,10 @@ app.use(
   })
 );
 app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.status(200).send("Backend is running");
+});
 
 app.get("/api/health", (req, res) => {
   res.status(200).json({ success: true, message: "API is healthy" });
