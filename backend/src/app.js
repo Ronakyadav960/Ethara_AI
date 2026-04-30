@@ -13,7 +13,7 @@ dotenv.config();
 
 const app = express();
 
-const allowedOrigins = new Set(
+const configuredOrigins = new Set(
   [
     process.env.CLIENT_URL,
     process.env.ALLOWED_ORIGINS,
@@ -24,6 +24,34 @@ const allowedOrigins = new Set(
     .map((value) => value.trim())
     .filter(Boolean)
 );
+
+const normalizeOrigin = (value) => {
+  try {
+    return new URL(value).origin;
+  } catch {
+    return value.replace(/\/+$/, "");
+  }
+};
+
+const allowedOrigins = new Set(
+  Array.from(configuredOrigins).map((origin) => normalizeOrigin(origin))
+);
+
+const isAllowedOrigin = (origin) => {
+  const normalizedOrigin = normalizeOrigin(origin);
+
+  if (allowedOrigins.has(normalizedOrigin)) {
+    return true;
+  }
+
+  try {
+    const { hostname } = new URL(normalizedOrigin);
+    return hostname.endsWith(".vercel.app");
+  } catch {
+    return false;
+  }
+};
+
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -31,7 +59,7 @@ app.use(
         return callback(null, true);
       }
 
-      if (allowedOrigins.has(origin) || origin.endsWith(".vercel.app")) {
+      if (isAllowedOrigin(origin)) {
         return callback(null, true);
       }
 
