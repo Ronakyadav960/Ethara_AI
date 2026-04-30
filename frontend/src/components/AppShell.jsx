@@ -11,7 +11,7 @@ const AppShell = ({ title, subtitle, children }) => {
           <div className="flex flex-col gap-6 bg-gradient-to-r from-ink via-slate-800 to-moss px-6 py-6 text-white md:flex-row md:items-end md:justify-between md:px-8">
             <div>
               <Link to="/dashboard" className="font-display text-3xl tracking-wide">
-                Ethara PM
+                Ethara.Ai
               </Link>
               <h1 className="mt-4 font-display text-4xl">{title}</h1>
               <p className="mt-2 max-w-2xl text-sm text-slate-200">{subtitle}</p>

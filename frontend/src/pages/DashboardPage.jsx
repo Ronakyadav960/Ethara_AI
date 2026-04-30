@@ -30,7 +30,7 @@ const DashboardPage = () => {
 
   return (
     <AppShell
-      title="Delivery at a glance"
+      title="Task Moniter"
       subtitle="Track completion, pending work, and overdue tasks from one dashboard."
     >
       {error ? <div className="panel p-4 text-sm text-red-600">{error}</div> : null}
