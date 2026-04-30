@@ -1,7 +1,11 @@
 import axios from "axios";
 
+const defaultBaseUrl = import.meta.env.DEV
+  ? "http://localhost:5000/api"
+  : "https://etharaai-production-abd9.up.railway.app/api";
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
+  baseURL: import.meta.env.VITE_API_URL || defaultBaseUrl,
 });
 
 api.interceptors.request.use((config) => {
